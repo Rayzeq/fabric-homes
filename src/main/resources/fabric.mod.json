@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "id": "homes",
+  "version": "${version}",
+  "name": "Homes",
+  "description": "Create homes!",
+  "authors": [
+    "Me!"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "CC0-1.0",
+  "icon": "assets/homes/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "value": "io.github.rayzeq.Homes",
+        "adapter": "kotlin"
+      }
+    ],
+    "client": [
+      {
+        "value": "io.github.rayzeq.HomesClient",
+        "adapter": "kotlin"
+      }
+    ]
+  },
+  "mixins": [
+    "homes.mixins.json",
+    {
+      "config": "homes.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.14",
+    "minecraft": "~1.21.5",
+    "java": ">=21",
+    "fabric-api": "*",
+    "fabric-language-kotlin": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
