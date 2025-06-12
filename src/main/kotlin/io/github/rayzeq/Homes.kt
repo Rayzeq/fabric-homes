@@ -55,14 +55,7 @@ object Homes : ModInitializer {
                                     )
                                     1
                                 } else if (playerState.homes.size >= playerState.maxHomes) {
-                                    context.source.sendFeedback(
-                                        {
-                                            val text = Text.literal("You already have the maximal number of homes")
-                                            text.setStyle(Style.EMPTY.withColor(Formatting.RED))
-                                            text
-                                        },
-                                        false
-                                    )
+                                    context.source.sendError(Text.literal("You already have the maximal number of homes"))
                                     0
                                 } else {
                                     playerState.homes[name] = Pair(world.registryKey.value, pos)
@@ -93,14 +86,7 @@ object Homes : ModInitializer {
 
                                 val location = playerState.homes[name];
                                 if (location == null) {
-                                    context.source.sendFeedback(
-                                        {
-                                            val text = Text.literal("Home $name not found")
-                                            text.setStyle(Style.EMPTY.withColor(Formatting.RED))
-                                            text
-                                        },
-                                        false
-                                    )
+                                    context.source.sendError(Text.literal("Home $name not found"))
                                     0
                                 } else {
                                     val dimension = location.first
@@ -166,14 +152,7 @@ object Homes : ModInitializer {
                                     )
                                     1
                                 } else {
-                                    context.source.sendFeedback(
-                                        {
-                                            val text = Text.literal("Home $name not found")
-                                            text.setStyle(Style.EMPTY.withColor(Formatting.RED))
-                                            text
-                                        },
-                                        false
-                                    )
+                                    context.source.sendError(Text.literal("Home $name not found"))
                                     0
                                 }
 
@@ -202,14 +181,7 @@ object Homes : ModInitializer {
         val playerState = HomesState.getPlayerState(player)
 
         if (playerState.homes.isEmpty()) {
-            context.source.sendFeedback(
-                {
-                    val text = Text.literal("You don't have any home")
-                    text.setStyle(Style.EMPTY.withColor(Formatting.RED))
-                    text
-                },
-                false
-            )
+            context.source.sendError(Text.literal("You don't have any home"))
             return 0
         } else {
             val message =
@@ -264,14 +236,7 @@ object Homes : ModInitializer {
             )
             return 1
         } else {
-            context.source.sendFeedback(
-                {
-                    val text = Text.literal("You need to have 32 diamond in your inventory")
-                    text.setStyle(Style.EMPTY.withColor(Formatting.RED))
-                    text
-                },
-                false
-            )
+            context.source.sendError(Text.literal("You need to have 32 diamond in your inventory"))
             return 0
         }
     }
