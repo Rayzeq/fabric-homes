@@ -5,6 +5,7 @@ import com.mojang.brigadier.context.CommandContext
 import com.mojang.datafixers.util.Pair
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
+import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.inventory.Inventories
 import net.minecraft.network.packet.s2c.play.PositionFlag
 import net.minecraft.predicate.item.ItemPredicate
@@ -172,7 +173,38 @@ object Homes : ModInitializer {
                     .requires { source -> source.player !== null }
                     .executes(Homes::executeBuyHome)
                     .redirect(buyhome)
-            );
+            )
+
+            dispatcher.register(
+                CommandManager
+                    .literal("pos")
+                    .then(
+                        CommandManager
+                            .argument("player", EntityArgumentType.player())
+                            .executes { context: CommandContext<ServerCommandSource> ->
+                                val target = EntityArgumentType.getPlayer(context, "player")
+                                val pos = target.pos
+                                val world = target.world.registryKey.value.toTranslationKey()
+
+                                val text = target.name
+                                    .copy()
+                                    .append(Text.literal(" is at ${pos.x.roundToLong()} ${pos.y.roundToLong()} ${pos.z.roundToLong()} in "))
+                                when (world) {
+                                    "minecraft.overworld" -> text.append("the Overworld")
+                                    "minecraft.the_nether" -> text.append("the Nether")
+                                    "minecraft.the_end" -> text.append("the End")
+                                    else -> text.append(world)
+                                }
+                                context.source.sendFeedback(
+                                    { text },
+                                    false
+                                )
+                                target.sendMessage(Text.literal("Someone's watching you..."))
+
+                                1
+                            }
+                    )
+            )
         }
     }
 
